@@ -1,4 +1,5 @@
-<div class="">
+
+  <div class="">
 
   <div class="action-bar">
 
@@ -6,18 +7,26 @@
       <li *ngFor="let role of roles" class="list-group-item">{{ role.role }}</li>
     </ul> -->
 
-    <div class="row">
+    <div class="">
+      <div class="col-md-4">
+          <button (click)="viewAll()" class="btn btn-secondary" type="button">
+            All
+          </button>
+      </div>
+      <br>
+      <!-- <span style="width: 20px;"></span> -->
       <div class="col-md-4">
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            users
+            users <span *ngIf="items">({{ items.length }})</span>
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a *ngFor="let user of items" class="dropdown-item" href="#">{{ user.name }}</a>
+            <a *ngFor="let user of items" class="dropdown-item" href="#"  (click)="history(user)">{{ user.name }}</a>
           </div>
         </div>
       </div>
-      <span style="width: 10px;"></span>
+      <br>
+      <!-- <span style="width: 20px;"></span> -->
       <div class="col-md-4">
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,20 +61,50 @@
 
   <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
 
-    <agm-marker *ngFor="let user of items" 
-    [latitude]="getLat(user)" 
-    [longitude]="getLong(user)" 
-    (markerClick)="clickedMarker(user.name)">
+    <div *ngIf="!mode">
+      <agm-marker *ngFor="let user of items" 
+      [latitude]="getLat(user)" 
+      [longitude]="getLong(user)" 
+      (markerClick)="clickedMarker(user.name)"
+      [iconUrl]="icon">
+  
+        <agm-info-window>
+            <strong>{{ user.name }}</strong>
+            <br>
+            <small>{{ user.mobile }}</small>
+            <br>
+            <small>{{ 'Helper' }}</small>
+            <br>
+            <button type="link" (click)="history(user)">
+              History
+            </button>
+        </agm-info-window>
+  
+      </agm-marker>
+    </div>
 
-      <agm-info-window>
-          <strong>{{ user.name }}</strong>
-          <br>
-          <small>{{ user.mobile }}</small>
-          <br>
-          <small>{{ 'Helper' }}</small>
-      </agm-info-window>
-
-    </agm-marker>
+    <div *ngIf="mode">
+        <agm-marker *ngFor="let location of user.locations; let i = index" 
+        [latitude]="location.latitude" 
+        [longitude]="location.longitude" 
+        (markerClick)="clickedMarker(user.name)"
+        [iconUrl]="icon"
+        label="{{i + 1}}">
+    
+          <agm-info-window>
+              <strong>{{ user.name }}</strong>
+              <br>
+              <small>{{ user.mobile }}</small>
+              <br>
+              <small>{{ 'Helper' }}</small>
+              <br>
+              <button type="link" (click)="history(user)">
+                History
+              </button>
+          </agm-info-window>
+    
+        </agm-marker>
+    </div>
 
   </agm-map>
 </div>

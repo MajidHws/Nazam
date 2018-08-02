@@ -1,0 +1,48 @@
+<div class="">
+
+    <div class="action-bar">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              users
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a *ngFor="let user of items" class="dropdown-item" href="#">{{ user.name }}</a>
+            </div>
+          </div>
+        </div>
+        <span style="width: 10px;"></span>
+        <div class="col-md-4">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Roles
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a *ngFor="let role of roles" class="dropdown-item" href="#">{{ role.role }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+  
+      <agm-marker *ngFor="let user of items" 
+      [latitude]="getLat(user)" 
+      [longitude]="getLong(user)" 
+      (markerClick)="clickedMarker(user.name)">
+  
+        <agm-info-window>
+            <strong>{{ user.name }}</strong>
+            <br>
+            <small>{{ user.mobile }}</small>
+            <br>
+            <small>{{ 'Helper' }}</small>
+        </agm-info-window>
+  
+      </agm-marker>
+  
+    </agm-map>
+  </div>
+  
